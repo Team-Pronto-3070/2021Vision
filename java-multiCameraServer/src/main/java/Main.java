@@ -25,6 +25,7 @@ import edu.wpi.first.vision.VisionPipeline;
 import edu.wpi.first.vision.VisionThread;
 
 import org.opencv.core.Mat;
+import org.opencv.core.Point;
 
 /*
    JSON format:
@@ -93,6 +94,31 @@ public final class Main {
   public static List<VideoSource> cameras = new ArrayList<>();
 
   private Main() {
+  }
+
+  public enum Path{ARED, ABLUE, BRED, BBLUE}
+  public final PixelPoint[] ARED_PROFILE; //Add constant pixel point profiles here
+  public final PixelPoint[] ABLUE_PROFILE;
+  public final PixelPoint[] BRED_PROFILE;
+  public final PixelPoint[] BBLUE_PROFILE;
+  public static void choosePath(NetworkTableInstance table, ArrayList<Point> points){
+    Path path;
+    
+    
+
+    switch(path){
+      case ARED:
+        break;
+      case ABLUE:
+        break;
+      case BRED:
+        break;
+      case BBLUE:
+        break;
+      default:
+        System.out.println("No path chosen in java-multiCameraServer/Main.java: Main.choosePath()");
+        break;
+    }
   }
 
   /**
