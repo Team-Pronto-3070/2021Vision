@@ -96,15 +96,39 @@ public final class Main {
   private Main() {
   }
 
+  PixelPoint[] ARED_POINTS = {
+    new PixelPoint(0.0, 0.0, 0.0),
+    new PixelPoint(0.0, 0.0, 0.0),
+    new PixelPoint(0.0, 0.0, 0.0)
+  };
+  PixelPoint[] ABLUE_POINTS = {
+    new PixelPoint(0.0, 0.0, 0.0),
+    new PixelPoint(0.0, 0.0, 0.0),
+    new PixelPoint(0.0, 0.0, 0.0)
+  };
+  PixelPoint[] BRED_POINTS = {
+    new PixelPoint(0.0, 0.0, 0.0),
+    new PixelPoint(0.0, 0.0, 0.0),
+    new PixelPoint(0.0, 0.0, 0.0)
+  };
+  PixelPoint[] BBLUE_POINTS = {
+    new PixelPoint(0.0, 0.0, 0.0),
+    new PixelPoint(0.0, 0.0, 0.0),
+    new PixelPoint(0.0, 0.0, 0.0)
+  };
+  
   public enum Path{ARED, ABLUE, BRED, BBLUE}
-  public final PixelPoint[] ARED_PROFILE; //Add constant pixel point profiles here
-  public final PixelPoint[] ABLUE_PROFILE;
-  public final PixelPoint[] BRED_PROFILE;
-  public final PixelPoint[] BBLUE_PROFILE;
-  public static void choosePath(NetworkTableInstance table, ArrayList<Point> points){
+  public final PixelProfile ARED_PROFILE = new PixelProfile(ARED_POINTS);  //Add constant pixel point profiles here
+  public final PixelProfile ABLUE_PROFILE = new PixelProfile(ABLUE_POINTS);
+  public final PixelProfile BRED_PROFILE = new PixelProfile(BRED_POINTS);
+  public final PixelProfile BBLUE_PROFILE = new PixelProfile(BBLUE_POINTS);
+  PixelProfile[] profiles = {ARED_PROFILE, ABLUE_PROFILE};
+  public void choosePath(NetworkTableInstance table, ArrayList<Point> points){
     Path path;
     
-    
+    for(PixelProfile profile : profiles){
+
+    }
 
     switch(path){
       case ARED:
