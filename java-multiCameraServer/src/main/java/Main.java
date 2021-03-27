@@ -100,8 +100,9 @@ public final class Main {
   /**
    * This is the pathing section!! I know it's excessibe; I'll admit, I just wanted to see how enums worked.
    */
-  //Formatted x, y, area (add as many points as you want though they 
+  //Formatted x, y, area, pointTolerance (optional) (add as many points as you want though they 
   //need to be in the same order as the camera point list)
+
   final PixelPoint[] ARED_POINTS = {
     new PixelPoint(0.0, 0.0, 0.0),
     new PixelPoint(0.0, 0.0, 0.0),
