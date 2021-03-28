@@ -20,6 +20,7 @@ import edu.wpi.cscore.UsbCamera;
 import edu.wpi.cscore.VideoSource;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.EntryListenerFlags;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.vision.VisionPipeline;
 import edu.wpi.first.vision.VisionThread;
@@ -136,6 +137,8 @@ public final class Main {
   //List of preset profiles to compare too
   PixelProfile[] profiles = {ARED_PROFILE, ABLUE_PROFILE,BRED_PROFILE,BBLUE_PROFILE};
 
+ 
+
   /**
    * This method takes a network table and a list of points to compare to. 
    * It will match the closest matching profile and return the chosen path in the network table. 
@@ -145,16 +148,24 @@ public final class Main {
    */
   public void choosePath(NetworkTableInstance table, ArrayList<PixelPoint> points){
     PixelProfile visibleProfile = new PixelProfile((PixelPoint[]) points.toArray(), Path.NOPATH);
+
+    NetworkTableEntry entry = table.getEntry("PATH");
+
     switch(visibleProfile.match(profiles)){
       case ARED:
+        entry.setString("ARED");
         break;
       case ABLUE:
+        entry.setString("ABLUE");
         break;
       case BRED:
+        entry.setString("BRED");
         break;
       case BBLUE:
+        entry.setString("BBLUE");
         break;
       case NOPATH:
+        entry.setString("NOPATH");
         System.out.println("No path chosen in java-multiCameraServer/Main.java: Main.choosePath()");
         break;
     }
