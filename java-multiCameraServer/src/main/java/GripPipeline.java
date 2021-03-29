@@ -6,9 +6,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.HashMap;
-import PixelPoint.java; 
+import edu.wpi.first.vision.*;
+//import edu.wpi.first.vision.VisionPipeline;
 
-import edu.wpi.first.wpilibj.vision.VisionPipeline;
+//import edu.wpi.first.wpilibj.vision.VisionPipeline;
 
 import org.opencv.core.*;
 import org.opencv.core.Core.*;
@@ -33,6 +34,8 @@ public class GripPipeline implements VisionPipeline {
 	private ArrayList<MatOfPoint> findContoursOutput = new ArrayList<MatOfPoint>();
 	private ArrayList<MatOfPoint> filterContoursOutput = new ArrayList<MatOfPoint>();
 	public ArrayList<PixelPoint> cargoPoints = new ArrayList<PixelPoint>();
+	public Point startingPoint;
+	public Point oppositePoint;
 
 	static {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
@@ -85,10 +88,17 @@ public class GripPipeline implements VisionPipeline {
 
 		if(filterContoursOutput.size()> 0){
 			Rect boundRect = Imgproc.boundingRect(filterContoursOutput.get(0));
+			double startX = boundRect.x;
+			double startY = boundRect.y;
+			double oppositeX = boundRect.x + boundRect.width;
+			double oppositeY = boundRect.y + boundRect.height;
 			double centerX = boundRect.x + (boundRect.width / 2);
 			double centerY = boundRect.y + (boundRect.height / 2);
 			double area = 0;
+
 			PixelPoint center = new PixelPoint(centerX, centerY, area);
+			startingPoint = new Point(startX, startY);
+			oppositePoint = new Point(oppositeX, oppositeY);
 			
 		
 			
