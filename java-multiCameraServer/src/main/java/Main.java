@@ -142,14 +142,13 @@ public final class Main {
   /**
    * This method takes a network table and a list of points to compare to. 
    * It will match the closest matching profile and return the chosen path in the network table. 
-   * !!NEED TO ADD NETWORK TABLE FUNCTIONALITY!!
    * @param table
    * @param points
    */
-  public void choosePath(NetworkTableInstance table, ArrayList<PixelPoint> points){
+  public void choosePath(ArrayList<PixelPoint> points){
     PixelProfile visibleProfile = new PixelProfile((PixelPoint[]) points.toArray(), Path.NOPATH);
 
-    NetworkTableEntry entry = table.getEntry("PATH");
+    NetworkTableEntry entry = NetworkTableInstance.getDefault().getTable("vision").getEntry("galacticSearchPath");
 
     switch(visibleProfile.match(profiles)){
       case ARED:
