@@ -56,8 +56,8 @@ public class PixelPoint {
         double validPoints = 3;
 
         //For each value in this.values, compare with the equivilant values in point.values and discard values outside tolerance
-        for(double value : values){
-            double difference = Math.abs(Math.abs(value) - Math.abs(value));
+        for(int i = 0; i< values.length; i++){
+            double difference = Math.abs(Math.abs(values[i]) - Math.abs(point.values[i]));
             if(difference < pointTolerance){
                 sum += difference;
             }else{

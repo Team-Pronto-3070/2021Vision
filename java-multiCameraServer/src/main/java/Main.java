@@ -22,6 +22,7 @@ import edu.wpi.cscore.UsbCamera;
 import edu.wpi.cscore.VideoSource;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.EntryListenerFlags;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.vision.VisionPipeline;
 import edu.wpi.first.vision.VisionThread;
@@ -128,14 +129,11 @@ public final class Main {
     new PixelPoint(0.0, 0.0, 0.0)
   };
 
-  //Path list
-  public enum Path{ARED, ABLUE, BRED, BBLUE, NOPATH}
-
   //Create profile objects for the points lists (can compare objects to get match value)
-  public final PixelProfile ARED_PROFILE = new PixelProfile(ARED_POINTS, Path.ARED);
-  public final PixelProfile ABLUE_PROFILE = new PixelProfile(ABLUE_POINTS, Path.ABLUE);
-  public final PixelProfile BRED_PROFILE = new PixelProfile(BRED_POINTS, Path.BRED);
-  public final PixelProfile BBLUE_PROFILE = new PixelProfile(BBLUE_POINTS, Path.BBLUE);
+  public final PixelProfile ARED_PROFILE = new PixelProfile(ARED_POINTS, "aRed");
+  public final PixelProfile ABLUE_PROFILE = new PixelProfile(ABLUE_POINTS, "aBlue");
+  public final PixelProfile BRED_PROFILE = new PixelProfile(BRED_POINTS, "bRed");
+  public final PixelProfile BBLUE_PROFILE = new PixelProfile(BBLUE_POINTS, "bBlue");
   
   //List of preset profiles to compare too
   PixelProfile[] profiles = {ARED_PROFILE, ABLUE_PROFILE,BRED_PROFILE,BBLUE_PROFILE};
@@ -143,24 +141,19 @@ public final class Main {
   /**
    * This method takes a network table and a list of points to compare to. 
    * It will match the closest matching profile and return the chosen path in the network table. 
-   * !!NEED TO ADD NETWORK TABLE FUNCTIONALITY!!
    * @param table
    * @param points
    */
-  public void choosePath(NetworkTableInstance table, ArrayList<PixelPoint> points){
-    PixelProfile visibleProfile = new PixelProfile((PixelPoint[]) points.toArray(), Path.NOPATH);
-    switch(visibleProfile.match(profiles)){
-      case ARED:
-        break;
-      case ABLUE:
-        break;
-      case BRED:
-        break;
-      case BBLUE:
-        break;
-      case NOPATH:
-        System.out.println("No path chosen in java-multiCameraServer/Main.java: Main.choosePath()");
-        break;
+  public void choosePath(ArrayList<PixelPoint> points){
+    PixelProfile visibleProfile = new PixelProfile((PixelPoint[]) points.toArray(), "none");
+
+    NetworkTableEntry entry = NetworkTableInstance.getDefault().getTable("vision").getEntry("galacticSearchPath");
+
+    String chosenPath = visibleProfile.match(profiles);
+    entry.setString(chosenPath);
+    
+    if(chosenPath.equals("none")){
+      System.out.println("No path chosen in java-multiCameraServer/Main.java: Main.choosePath()");
     }
   }
 

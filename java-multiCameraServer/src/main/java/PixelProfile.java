@@ -5,12 +5,12 @@
 public class PixelProfile {
     
     //Enum name for this profile
-    Main.Path self;    
+    String self;    
 
     //List of points this class contains
     public final PixelPoint[] points;
 
-    public PixelProfile(PixelPoint[] points, Main.Path self){
+    public PixelProfile(PixelPoint[] points, String self){
         this.points = points;
         this.self = self;
     }
@@ -20,10 +20,10 @@ public class PixelProfile {
      * @param otherProfiles
      * @return
      */
-    public Main.Path match(PixelProfile[] otherProfiles){
+    public String match(PixelProfile[] otherProfiles){
         
         //Contains the name of the closest path
-        Main.Path closestPath = self;
+        String closestPath = self;
 
         //Contains the certainty of the match
         double closestPathCertainty = 0;
