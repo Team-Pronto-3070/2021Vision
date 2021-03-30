@@ -15,6 +15,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import edu.wpi.cscore.CvSink;
+import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.MjpegServer;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.cscore.VideoSource;
@@ -27,6 +29,8 @@ import edu.wpi.first.vision.VisionThread;
 
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
+import org.opencv.core.Scalar;
+import org.opencv.imgproc.Imgproc;
 
 /*
    JSON format:
@@ -355,14 +359,14 @@ public final class Main {
   /**
    * Example pipeline.
    */
-  public static class MyPipeline implements VisionPipeline {
-    public int val;
+  // public static class MyPipeline implements VisionPipeline {
+  //   public int val;
 
-    @Override
-    public void process(Mat mat) {
-      val += 1;
-    }
-  }
+  //   @Override
+  //   public void process(Mat mat) {
+  //     val += 1;
+  //   }
+  // }
 
   /**
    * Main.
@@ -400,9 +404,49 @@ public final class Main {
 
     // start image processing on camera 0 if present
     if (cameras.size() >= 1) {
-      VisionThread visionThread = new VisionThread(cameras.get(0),
-              new MyPipeline(), pipeline -> {
-        // do something with pipeline results
+      new Thread(() -> {
+        //NetworkTable table = NetworkTableInstance.getDefault().getTable("GripVisionData");
+        //NetworkTableEntry valid = table.getEntry("Valid");
+        
+        
+        CvSink videoIn = CameraServer.getInstance().getVideo();
+        CameraServer.getInstance().addServer("Outline");
+        // CameraServer.getInstance()
+        CameraServer.getInstance().addServer("Default");
+        // CameraServer.getInstance().
+        CvSource outputStream = CameraServer.getInstance().putVideo("Default", 640, 480);
+        CvSource outputStreamOutline = CameraServer.getInstance().putVideo("Outline", 640, 480);
+
+        System.out.println("Well we made it this far");
+
+        Mat source = new Mat();
+        Mat output = new Mat();
+
+        int thickness = 8;
+
+        Scalar color = new Scalar(0, 0, 255);
+        GripPipeline p = new GripPipeline();
+
+        while (!Thread.interrupted()) {
+          if (videoIn.grabFrame(source) == 0) {
+            continue;
+          }
+
+          p.process(source);
+
+          Imgproc.rectangle(source, p.startingPoint, p.oppositePoint, color, thickness);
+          // SsImgproc.cvtColor(source, output, Imgproc.boundingRect(array));
+          // Imgproc.cvtColor(source, output, Imgproc.COLOR_BGR2YCrCb);
+          outputStream.putFrame(source);
+          outputStreamOutline.putFrame(source);
+        }
+
+      });
+      VisionThread visionThread = new VisionThread(cameras.get(0), new GripPipeline(), pipeline -> {
+
+      // VisionThread visionThread = new VisionThread(cameras.get(0),
+      //         new MyPipeline(), pipeline -> {
+      //   // do something with pipeline results
       });
       /* something like this for GRIP:
       VisionThread visionThread = new VisionThread(cameras.get(0),
