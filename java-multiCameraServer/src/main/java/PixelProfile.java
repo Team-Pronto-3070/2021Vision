@@ -1,3 +1,7 @@
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+
 /**
  * This class is a collection of PixelPoint objects that adds comparation functionality;
  */
@@ -70,29 +74,42 @@ public class PixelProfile {
         //Holds the result of the PixelPoint.getDifference() method
         double[] differenceProfile; 
 
-        int matchingLength;
-        if(points.length - profile.points.length >= 0){
-            matchingLength = profile.points.length;
-        }else{
-            matchingLength = points.length;
+        //Holds the length of the other profile
+        int otherProfileLength = profile.points.length;
+
+        //Holds how many points have been compared
+        int numComparisions = 0;
+
+        //Holds an unsorted/sorted list of point differences
+        ArrayList<Double> pointListDif = new ArrayList<Double>();
+
+        //For each point in this profile, compare to every point in that profile and get differences
+        for(PixelPoint thisPoint : points){
+            for(PixelPoint thatPoint : profile.points){
+                differenceProfile = thisPoint.getDifference(thatPoint);
+                pointListDif.add(differenceProfile[0]/(differenceProfile[1] + 1));
+                certaintyScore += differenceProfile[1];
+                numComparisions++;
+            }
         }
 
-        //Compare each point in self to each point in the profile
-        for(int i = 0; i < matchingLength; i++){
-            
-            //Get the raw difference
-            differenceProfile = points[i].getDifference(profile.points[i]); 
-            
-            
-            //Divide by number of datapoints (helps ignore invalid data)
-            differenceSum += differenceProfile[0]/(differenceProfile[1] + 1 /*Avoid a divide by 0*/);
+        //Sort the point differences by size
+        Collections.sort(pointListDif);
 
-            //sum the certainty score (to be divided later)
-            certaintyScore += differenceProfile[1];
+        //Get the length of the profile with the least points
+        int shortestLength = points.length < otherProfileLength ? points.length : otherProfileLength;
+
+
+        //Only collect the values for points that are most likely to corrospond
+        for(int i = 0; i < shortestLength; i++){
+            differenceSum += pointListDif.get(i);
         }
 
-        //divides the certainty score by the number of points tested (*3 for the amount of data in each point !!NEEDS EDIT)
-        certaintyScore = certaintyScore/(points.length * 3);
+        //divides the certainty score by the number of points tested (*3 for the amount of data in each point)
+        certaintyScore /= numComparisions * 3;
+
+        //divides the calculated difference by the amount of used points compared (offsets the "less points = less difference" problem)
+        differenceSum /= shortestLength;
 
         return new double[]{differenceSum, certaintyScore};
     }
