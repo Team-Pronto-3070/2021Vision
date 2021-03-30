@@ -94,7 +94,7 @@ public class GripPipeline implements VisionPipeline {
 			double oppositeY = boundRect.y + boundRect.height;
 			double centerX = boundRect.x + (boundRect.width / 2);
 			double centerY = boundRect.y + (boundRect.height / 2);
-			double area = 0;
+			double area = boundRect.width *boundRect.height;
 
 			PixelPoint center = new PixelPoint(centerX, centerY, area);
 			startingPoint = new Point(startX, startY);
