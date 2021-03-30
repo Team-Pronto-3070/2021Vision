@@ -39,7 +39,7 @@ public class PixelPoint {
         values = new double[3];
         values[0] = x;
         values[1] = y;
-        values[3] = area;
+        values[2] = area;
     }
 
     /**
