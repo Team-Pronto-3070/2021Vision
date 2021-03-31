@@ -86,30 +86,45 @@ public class GripPipeline implements VisionPipeline {
 		double filterContoursMaxRatio = 1000.0;
 		filterContours(filterContoursContours, filterContoursMinArea, filterContoursMinPerimeter, filterContoursMinWidth, filterContoursMaxWidth, filterContoursMinHeight, filterContoursMaxHeight, filterContoursSolidity, filterContoursMaxVertices, filterContoursMinVertices, filterContoursMinRatio, filterContoursMaxRatio, filterContoursOutput);
 
+		/**
+		 * Manual Vision processing 
+		 * Checks to see that we have contours 
+		 * If countours exist runs through them all and creates a pixel point with the center and area of each contour
+		 */
 		if(filterContoursOutput.size()> 0){
-			Rect boundRect = Imgproc.boundingRect(filterContoursOutput.get(0));
-			double startX = boundRect.x;
-			double startY = boundRect.y;
-			double oppositeX = boundRect.x + boundRect.width;
-			double oppositeY = boundRect.y + boundRect.height;
-			double centerX = boundRect.x + (boundRect.width / 2);
-			double centerY = boundRect.y + (boundRect.height / 2);
-			double area = boundRect.width *boundRect.height;
 
-			PixelPoint center = new PixelPoint(centerX, centerY, area);
-			startingPoint = new Point(startX, startY);
-			oppositePoint = new Point(oppositeX, oppositeY);
-			
-		
-			
-			System.out.println("Center x,y: " + centerX + "," + centerY);
-			System.out.println("Area: "+ area);
-			
+			for(int i = 0; i < filterContoursOutput.size(); i++){
+				Rect boundRect = Imgproc.boundingRect(filterContoursOutput.get(i));
 
+				double centerX = boundRect.x + (boundRect.width / 2);
+				double centerY = boundRect.y + (boundRect.height / 2);
+				double area = boundRect.width *boundRect.height;
+
+				PixelPoint cargoInfo = new PixelPoint(centerX, centerY, area);
+
+				cargoPoints.add(cargoInfo);
+				
+				// Test Prints
+				System.out.println("Cargo found: " + filterContoursOutput.size());
+				System.out.println("Current Cargo: " + i);
+				System.out.println("Center x,y: " + centerX + "," + centerY);
+				System.out.println("Area: "+ area);
+
+
+				//Save this for now but delete if we don't need it
+				// double startX = boundRect.x;
+				// double startY = boundRect.y;
+				// double oppositeX = boundRect.x + boundRect.width;
+				// double oppositeY = boundRect.y + boundRect.height;
+				//startingPoint = new Point(startX, startY);
+				//oppositePoint = new Point(oppositeX, oppositeY);
+
+			}
 
 		}
 		else
 		{
+			//Runs error when nothing is found in vision processing
 			System.out.println("There are no contours");
 		}
 
