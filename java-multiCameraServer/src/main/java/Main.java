@@ -108,35 +108,35 @@ public final class Main {
   //Formatted x, y, area, pointTolerance (optional) (add as many points as you want though they 
   //need to be in the same order as the camera point list)
 
-  final PixelPoint[] ARED_POINTS = {
+  static final PixelPoint[] ARED_POINTS = {
     new PixelPoint(0.0, 0.0, 0.0),
     new PixelPoint(0.0, 0.0, 0.0),
     new PixelPoint(0.0, 0.0, 0.0)
   };
-  final PixelPoint[] ABLUE_POINTS = {
+  static final PixelPoint[] ABLUE_POINTS = {
     new PixelPoint(0.0, 0.0, 0.0),
     new PixelPoint(0.0, 0.0, 0.0),
     new PixelPoint(0.0, 0.0, 0.0)
   };
-  final PixelPoint[] BRED_POINTS = {
+  static final PixelPoint[] BRED_POINTS = {
     new PixelPoint(0.0, 0.0, 0.0),
     new PixelPoint(0.0, 0.0, 0.0),
     new PixelPoint(0.0, 0.0, 0.0)
   };
-  final PixelPoint[] BBLUE_POINTS = {
+  static final PixelPoint[] BBLUE_POINTS = {
     new PixelPoint(0.0, 0.0, 0.0),
     new PixelPoint(0.0, 0.0, 0.0),
     new PixelPoint(0.0, 0.0, 0.0)
   };
 
   //Create profile objects for the points lists (can compare objects to get match value)
-  public final PixelProfile ARED_PROFILE = new PixelProfile(ARED_POINTS, "aRed");
-  public final PixelProfile ABLUE_PROFILE = new PixelProfile(ABLUE_POINTS, "aBlue");
-  public final PixelProfile BRED_PROFILE = new PixelProfile(BRED_POINTS, "bRed");
-  public final PixelProfile BBLUE_PROFILE = new PixelProfile(BBLUE_POINTS, "bBlue");
+  public static final PixelProfile ARED_PROFILE = new PixelProfile(ARED_POINTS, "aRed");
+  public static final PixelProfile ABLUE_PROFILE = new PixelProfile(ABLUE_POINTS, "aBlue");
+  public static final PixelProfile BRED_PROFILE = new PixelProfile(BRED_POINTS, "bRed");
+  public static final PixelProfile BBLUE_PROFILE = new PixelProfile(BBLUE_POINTS, "bBlue");
   
   //List of preset profiles to compare too
-  PixelProfile[] profiles = {ARED_PROFILE, ABLUE_PROFILE,BRED_PROFILE,BBLUE_PROFILE};
+  static PixelProfile[] profiles = {ARED_PROFILE, ABLUE_PROFILE,BRED_PROFILE,BBLUE_PROFILE};
 
   /**
    * This method takes a network table and a list of points to compare to. 
@@ -144,7 +144,7 @@ public final class Main {
    * @param table
    * @param points
    */
-  public void choosePath(ArrayList<PixelPoint> points){
+  public static void choosePath(ArrayList<PixelPoint> points){
     PixelProfile visibleProfile = new PixelProfile((PixelPoint[]) points.toArray(), "none");
 
     NetworkTableEntry entry = NetworkTableInstance.getDefault().getTable("vision").getEntry("galacticSearchPath");
@@ -424,9 +424,13 @@ public final class Main {
           outputStreamOutline.putFrame(source);
         }
 
+        choosePath(p.cargoPoints);
       });
-      VisionThread visionThread = new VisionThread(cameras.get(0), new GripPipeline(), pipeline -> {
 
+    
+
+      VisionThread visionThread = new VisionThread(cameras.get(0), new GripPipeline(), pipeline -> {
+      
       // VisionThread visionThread = new VisionThread(cameras.get(0),
       //         new MyPipeline(), pipeline -> {
       //   // do something with pipeline results
@@ -438,7 +442,12 @@ public final class Main {
       });
        */
       visionThread.start();
+
+
     }
+
+
+    
 
     // loop forever
     for (;;) {
@@ -448,5 +457,7 @@ public final class Main {
         return;
       }
     }
+
+
   }
 }
