@@ -390,7 +390,7 @@ public final class Main {
         //NetworkTable table = NetworkTableInstance.getDefault().getTable("GripVisionData");
         //NetworkTableEntry valid = table.getEntry("Valid");
         
-        
+        //Creates and intitalizes cameras 
         CvSink videoIn = CameraServer.getInstance().getVideo();
         CameraServer.getInstance().addServer("Outline");
         // CameraServer.getInstance()
@@ -399,7 +399,7 @@ public final class Main {
         CvSource outputStream = CameraServer.getInstance().putVideo("Default", 640, 480);
         CvSource outputStreamOutline = CameraServer.getInstance().putVideo("Outline", 640, 480);
 
-        System.out.println("Well we made it this far");
+        
 
         Mat source = new Mat();
         Mat output = new Mat();
@@ -407,6 +407,7 @@ public final class Main {
         int thickness = 8;
 
         Scalar color = new Scalar(0, 0, 255);
+        //Creates Grip pipeline
         GripPipeline p = new GripPipeline();
 
         while (!Thread.interrupted()) {
@@ -416,7 +417,7 @@ public final class Main {
 
           p.process(source);
 
-          Imgproc.rectangle(source, p.startingPoint, p.oppositePoint, color, thickness);
+          //Imgproc.rectangle(source, p.startingPoint, p.oppositePoint, color, thickness);
           // SsImgproc.cvtColor(source, output, Imgproc.boundingRect(array));
           // Imgproc.cvtColor(source, output, Imgproc.COLOR_BGR2YCrCb);
           outputStream.putFrame(source);
