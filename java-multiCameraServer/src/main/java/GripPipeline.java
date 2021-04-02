@@ -47,9 +47,9 @@ public class GripPipeline implements VisionPipeline {
 	@Override	public void process(Mat source0) {
 		// Step HSV_Threshold0:
 		Mat hsvThresholdInput = source0;
-		double[] hsvThresholdHue = {12.949640287769784, 130.85324232081913};
-		double[] hsvThresholdSaturation = {29.81115107913669, 220.18771331058022};
-		double[] hsvThresholdValue = {134.477658055335, 255.0};
+		double[] hsvThresholdHue = {0.18632575713421184, 72.18184069558778};
+		double[] hsvThresholdSaturation = {107.02302564727877, 255.0};
+		double[] hsvThresholdValue = {67.86789501830701, 252.72727272727272};
 		hsvThreshold(hsvThresholdInput, hsvThresholdHue, hsvThresholdSaturation, hsvThresholdValue, hsvThresholdOutput);
 
 		// Step CV_erode0:
@@ -73,17 +73,17 @@ public class GripPipeline implements VisionPipeline {
 
 		// Step Filter_Contours0:
 		ArrayList<MatOfPoint> filterContoursContours = findContoursOutput;
-		double filterContoursMinArea = 1000.0;
+		double filterContoursMinArea = 10.0;
 		double filterContoursMinPerimeter = 0.0;
-		double filterContoursMinWidth = 0;
-		double filterContoursMaxWidth = 1000;
-		double filterContoursMinHeight = 0;
-		double filterContoursMaxHeight = 1000;
-		double[] filterContoursSolidity = {0, 100};
+		double filterContoursMinWidth = 0.0;
+		double filterContoursMaxWidth = 10000.0;
+		double filterContoursMinHeight = 0.0;
+		double filterContoursMaxHeight = 1000.0;
+		double[] filterContoursSolidity = {0, 100.0};
 		double filterContoursMaxVertices = 1000000.0;
-		double filterContoursMinVertices = 100.0;
+		double filterContoursMinVertices = 0.0;
 		double filterContoursMinRatio = 0.0;
-		double filterContoursMaxRatio = 1000.0;
+		double filterContoursMaxRatio = 100.0;
 		filterContours(filterContoursContours, filterContoursMinArea, filterContoursMinPerimeter, filterContoursMinWidth, filterContoursMaxWidth, filterContoursMinHeight, filterContoursMaxHeight, filterContoursSolidity, filterContoursMaxVertices, filterContoursMinVertices, filterContoursMinRatio, filterContoursMaxRatio, filterContoursOutput);
 
 		/**

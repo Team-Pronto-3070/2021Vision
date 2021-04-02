@@ -105,29 +105,36 @@ public final class Main {
   /**
    * This is the pathing section!! I know it's excessibe; I'll admit, I just wanted to see how enums worked.
    */
+
+  PixelPoint[] ARED_POINTS;
+  PixelPoint[] ABLUE_POINTS;
+  PixelPoint[] BRED_POINTS;
+  PixelPoint[] BBLUE_POINTS;
+
+  public void setProfiles(ArrayList<PixelPoint> points){
+    NetworkTableEntry entry = NetworkTableInstance.getDefault().getTable("vision").getEntry("setProfile");
+
+    switch(entry.getString("profiles")){
+      case "aRed":
+        ARED_POINTS = (PixelPoint[]) points.toArray();
+        break;
+      case "aBlue":
+        ABLUE_POINTS = (PixelPoint[]) points.toArray();
+        break;
+      case "bRed":
+        BRED_POINTS = (PixelPoint[]) points.toArray();
+        break;
+      case "bBlue":
+        BBLUE_POINTS = (PixelPoint[]) points.toArray();
+        break;
+      case "noSet":
+        break;
+    }
+  }
   //Formatted x, y, area, pointTolerance (optional) (add as many points as you want though they 
   //need to be in the same order as the camera point list)
 
-  final PixelPoint[] ARED_POINTS = {
-    new PixelPoint(0.0, 0.0, 0.0),
-    new PixelPoint(0.0, 0.0, 0.0),
-    new PixelPoint(0.0, 0.0, 0.0)
-  };
-  final PixelPoint[] ABLUE_POINTS = {
-    new PixelPoint(0.0, 0.0, 0.0),
-    new PixelPoint(0.0, 0.0, 0.0),
-    new PixelPoint(0.0, 0.0, 0.0)
-  };
-  final PixelPoint[] BRED_POINTS = {
-    new PixelPoint(0.0, 0.0, 0.0),
-    new PixelPoint(0.0, 0.0, 0.0),
-    new PixelPoint(0.0, 0.0, 0.0)
-  };
-  final PixelPoint[] BBLUE_POINTS = {
-    new PixelPoint(0.0, 0.0, 0.0),
-    new PixelPoint(0.0, 0.0, 0.0),
-    new PixelPoint(0.0, 0.0, 0.0)
-  };
+  
 
   //Create profile objects for the points lists (can compare objects to get match value)
   public final PixelProfile ARED_PROFILE = new PixelProfile(ARED_POINTS, "aRed");
@@ -387,8 +394,6 @@ public final class Main {
     // start image processing on camera 0 if present
     if (cameras.size() >= 1) {
       new Thread(() -> {
-        //NetworkTable table = NetworkTableInstance.getDefault().getTable("GripVisionData");
-        //NetworkTableEntry valid = table.getEntry("Valid");
         
         //Creates and intitalizes cameras 
         CvSink videoIn = CameraServer.getInstance().getVideo();
@@ -396,8 +401,8 @@ public final class Main {
         // CameraServer.getInstance()
         CameraServer.getInstance().addServer("Default");
         // CameraServer.getInstance().
-        CvSource outputStream = CameraServer.getInstance().putVideo("Default", 640, 480);
-        CvSource outputStreamOutline = CameraServer.getInstance().putVideo("Outline", 640, 480);
+        CvSource outputStream = CameraServer.getInstance().putVideo("Default", 1280, 720);
+        CvSource outputStreamOutline = CameraServer.getInstance().putVideo("Outline", 1280, 720);
 
         
 
